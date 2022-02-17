@@ -1,33 +1,52 @@
 let sum = 0;
-const listCosts = [];
+let flag = 0;
+let listCosts = [];
 
-window.onload = () => {
+window.onload = async() => {
   const mainContainer = document.getElementById("mainContainer");
   const addInList = document.getElementById("addInList");
   addInList.onclick = () => addCosts();
   const inputPlace = document.getElementById("inputPlace");
   inputPlace.addEventListener("change", inputValue);
-  const inputSpend = document.getElementById("inputSpend");
-  inputSpend.addEventListener("change", inputValue);
+  const inputSpent = document.getElementById("inputSpent");
+  inputSpent.addEventListener("change", inputValue);
+    
+  
+  const resp = await fetch("http://localhost:8000/allCosts", {
+    method: "GET",
+  });
+  let result = await resp.json();
+  listCosts = result.body;
 
   render();
 };
 
-const addCosts = () => {
+const addCosts = async() => {
   let placeName = inputPlace.value;
-  let spend = inputSpend.value;
-  if (inputPlace.value === "" || inputSpend.value === "") {
+  let spent = inputSpent.value;
+  const resp = await fetch("http://localhost:8000/createCosts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+      "Access-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify({
+      place: inputPlace.value,
+      date: Date(),
+      spent: inputSpent.value
+    }),
+  });
+  if (inputPlace.value === "" || inputSpent.value === "") {
     alert("Заполните все поля");
   };
 
-  let costs = { place: placeName, spend: spend };
+  let costs = { place: placeName, spent: spent };
   listCosts.push(costs);
-  const numCost = Number(inputSpend.value);
-  sum = sum + numCost;
+
   inputPlace.value = "";
-  inputSpend.value = "";
+  inputSpent.value = "";
   place = "";
-  spend = "";
+  spent = "";
 
   render();
 };
@@ -37,16 +56,19 @@ let inputValue = (event) => {
 };
 
 const render = () => {
+  sum = 0;
   const content = document.getElementById("content");
   while (content.firstChild) {
     content.removeChild(content.lastChild);
   };
-
-  const summ = document.createElement("p");
-  summ.innerText = `Итого: ${sum} Р.`;
+  let summ = document.createElement("p");
   content.appendChild(summ);
 
   listCosts.map((item, index) => {
+    const id = listCosts[index]._id;
+    const placeIndex = listCosts[index].place;
+    const spentIndex = listCosts[index].spent;
+    const newSpent = Number(item.spent);
     const container = document.createElement("div");
     container.id = `costs-${index}`;
     container.className = "costs-container";
@@ -54,34 +76,55 @@ const render = () => {
     let text = document.createElement("p");
     text.innerText = `${index + 1}) Магазин: "${item.place}"`;
 
-    let spend = document.createElement("p");
-    spend.innerText = `${item.spend} Р.`;
+    let date = document.createElement('p');
+    date.innerText = new Date().toLocaleDateString();
+
+    let spent = document.createElement("p");
+    spent.innerText = listCosts[index].spent;
+    
+    sum = sum + newSpent;
+    summ.innerText = `Итого: ${sum} Р.`;
 
     const buttonArea = document.createElement("div");
     buttonArea.className = "buttonArea";
 
     const changeButton = document.createElement("button");
-    changeButton.onclick = () => changeFun(index);
+    changeButton.onclick = () => changeFun(placeIndex, spentIndex, index);
+
+    const imageEdit = document.createElement("img");
+    imageEdit.src = "img/editor.svg";
+    changeButton.appendChild(imageEdit);
 
     const deleteButton = document.createElement("button");
-    deleteButton.onclick = () => deleteFun(index);
+    deleteButton.onclick = () => deleteFun(id);
+
+    const imageDelete = document.createElement("img");
+    imageDelete.src = "img/remove.svg";
+    deleteButton.appendChild(imageDelete);
 
     buttonArea.appendChild(changeButton);
     buttonArea.appendChild(deleteButton);
-
     container.appendChild(text);
-    container.appendChild(spend);
+    container.appendChild(date);
+    container.appendChild(spent);
     container.appendChild(buttonArea);
     content.appendChild(container);
   });
 };
 
-const deleteFun = (index) => {
-  listCosts.splice(index, 1);
+const deleteFun = async (id) => {
+  const resp = await fetch(`http://localhost:8000/deleteCosts?_id=${id}`, {
+    method: "DELETE",
+  });
+  let result = await resp.json();
+  listCosts = result.data;
   
   render();
 };
 
-const changeFun = (index) => {
+const changeFun = async (placeIndex, spentIndex, index) => {
+  listCosts[index].flag = 1;
   console.log(listCosts[index]);
+
+  render();
 };
