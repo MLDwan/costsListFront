@@ -5,27 +5,27 @@ window.onload = () => {
   const mainContainer = document.getElementById("mainContainer");
   const addInList = document.getElementById("addInList");
   addInList.onclick = () => addCosts();
-  const input = document.getElementById("input");
-  input.addEventListener("change", inputValue);
-  const input1 = document.getElementById("input1");
-  input1.addEventListener("change", inputValue);
-  sum = 0;
+  const inputPlace = document.getElementById("inputPlace");
+  inputPlace.addEventListener("change", inputValue);
+  const inputSpend = document.getElementById("inputSpend");
+  inputSpend.addEventListener("change", inputValue);
 
   render();
 };
 
 const addCosts = () => {
-  let placeName = input.value;
-  let spend = input1.value;
-  if (input.value === "" || input1.value === "") {
+  let placeName = inputPlace.value;
+  let spend = inputSpend.value;
+  if (inputPlace.value === "" || inputSpend.value === "") {
     alert("Заполните все поля");
-  }
+  };
+
   let costs = { place: placeName, spend: spend };
   listCosts.push(costs);
-  const t = Number(input1.value);
-  sum = sum + t;
-  input.value = "";
-  input1.value = "";
+  const numCost = Number(inputSpend.value);
+  sum = sum + numCost;
+  inputPlace.value = "";
+  inputSpend.value = "";
   place = "";
   spend = "";
 
@@ -40,7 +40,7 @@ const render = () => {
   const content = document.getElementById("content");
   while (content.firstChild) {
     content.removeChild(content.lastChild);
-  }
+  };
 
   const summ = document.createElement("p");
   summ.innerText = `Итого: ${sum} Р.`;
