@@ -1,30 +1,28 @@
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
+    <title>Document</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
-  <title>Document</title>
-</head>
-
-<body>
-  <header>
-    <h1>Учет моих расходов</h1>
-  </header>
-  <div id="mainContainer">
-    <div>
-      <p>Куда было потрачено</p>
-      <input id="inputPlace" type="text" placeholder="Куда было потрачено">
+  <body>
+    <header>
+      <h1>Учет моих расходов</h1>
+    </header>
+    <div id="mainContainer">
+      <div class="inputContainer">
+        <p>Куда было потрачено</p>
+        <input id="inputPlace" type="text" placeholder="Куда было потрачено" />
+      </div>
+      <div class="inputContainer">
+        <p>Сколько было потрачено</p>
+        <input id="inputSpent" type="text" placeholder="Сколько было потрачено"/>
+      </div>
+      <button id="addInList">Добавить</button>
     </div>
-    <div>
-      <p>Сколько было потрачено</p>
-      <input id="inputSpent" type="text" placeholder="Сколько было потрачено">
-    </div>
-    <button id="addInList">Добавить</button>
-  </div>
-  <div id="content"></div>
-</body>
-
+    <div id="content"></div>
+  </body>
 </html>
