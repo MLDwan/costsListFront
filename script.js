@@ -36,7 +36,7 @@ const addCosts = async () => {
       body: JSON.stringify({
         place: placeName,
         date: new Date().toLocaleDateString(),
-        spent: spent,
+        spent
       }),
     });
     const result = await resp.json();
@@ -63,9 +63,8 @@ const render = () => {
   content.appendChild(summ);
 
   listCosts.map((item, index) => {
-    console.log(listCosts[index]);
     let { place, spent, _id } = listCosts[index];
-    const newSpent = Number(spent);
+    const newSpent = spent;
     const container = document.createElement("div");
     container.id = `costs-${index}`;
     container.className = "costs-container";
@@ -109,14 +108,13 @@ const render = () => {
       text.innerText = `${index + 1}) Магазин: "${item.place}"`;
 
       const date = document.createElement("p");
-      if (listCosts[index].date == undefined) {
-        date.innerText = new Date().toLocaleDateString();
-      } else date.innerText = listCosts[index].date;
+     
+      date.innerText = listCosts[index].date;
 
       const spentText = document.createElement("p");
       spentText.innerText = `${spent} Р`;
 
-      sum = sum + newSpent;
+      sum = sum + spent;
       summ.innerText = `Итого: ${sum} Р.`;
 
       const buttonArea = document.createElement("div");
@@ -200,8 +198,8 @@ const acceptFun = async (place, spent, index, _id) => {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        place: place,
-        spent: spent,
+        place,
+        spent,
         _id,
       }),
     });
