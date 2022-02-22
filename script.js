@@ -36,7 +36,7 @@ const addCosts = async () => {
       body: JSON.stringify({
         place: placeName,
         date: new Date().toLocaleDateString(),
-        spent
+        spent,
       }),
     });
     const result = await resp.json();
@@ -63,40 +63,156 @@ const render = () => {
   content.appendChild(summ);
 
   listCosts.map((item, index) => {
-    let { place, spent, _id } = listCosts[index];
-    const newSpent = spent;
+    flag = 0;
+    let { place, spent, _id, date } = listCosts[index];
     const container = document.createElement("div");
     container.id = `costs-${index}`;
     container.className = "costs-container";
+    if (listCosts[index].flag > 0) {
+      if (listCosts[index].flag === 1) {
+        inputPlaceChange = document.createElement("input");
+        inputPlaceChange.type = "text";
+        inputPlaceChange.addEventListener("change", inputChangePlaceValue);
+        inputPlaceChange.value = place;
+        container.appendChild(inputPlaceChange);
 
-    if (listCosts[index].flag === 1) {
-      inputPlaceChange = document.createElement("input");
-      inputPlaceChange.type = "text";
-      inputPlaceChange.addEventListener("change", inputChangePlaceValue);
-      inputPlaceChange.value = place;
-      container.appendChild(inputPlaceChange);
+        inputSpentChange = document.createElement("input");
+        inputSpentChange.type = "number";
+        inputSpentChange.addEventListener("change", inputChangeSpentValue);
+        inputSpentChange.value = spent;
+        container.appendChild(inputSpentChange);
 
-      inputSpentChange = document.createElement("input");
-      inputSpentChange.type = "text";
-      inputSpentChange.addEventListener("change", inputChangeSpentValue);
-      inputSpentChange.value = spent;
-      container.appendChild(inputSpentChange);
+        dateChange = document.createElement("input");
+        dateChange.type = "date";
+        dateChange.addEventListener("change", dateChangetValue);
+        dateChange.value = date;
+        container.appendChild(dateChange);
 
-      const acceptButton = document.createElement("button");
-      acceptButton.onclick = () => acceptFun(place, spent, index, _id);
-      container.appendChild(acceptButton);
+        const acceptButton = document.createElement("button");
+        acceptButton.onclick = () => acceptFun(place, spent, index, _id, date);
+        container.appendChild(acceptButton);
 
-      const cancelButton = document.createElement("button");
-      cancelButton.onclick = () => cancelFun(index);
-      container.appendChild(cancelButton);
+        const cancelButton = document.createElement("button");
+        cancelButton.onclick = () => cancelFun(index);
+        container.appendChild(cancelButton);
 
-      const imageAccept = document.createElement("img");
-      imageAccept.src = "img/accept.svg";
-      acceptButton.appendChild(imageAccept);
+        const imageAccept = document.createElement("img");
+        imageAccept.src = "img/accept.svg";
+        acceptButton.appendChild(imageAccept);
 
-      const imageCancel = document.createElement("img");
-      imageCancel.src = "img/cancel.svg";
-      cancelButton.appendChild(imageCancel);
+        const imageCancel = document.createElement("img");
+        imageCancel.src = "img/cancel.svg";
+        cancelButton.appendChild(imageCancel);
+      }
+      if (listCosts[index].flag === 2) {
+        inputPlaceChange = document.createElement("input");
+        inputPlaceChange.type = "text";
+        inputPlaceChange.addEventListener("change", inputChangePlaceValue);
+        inputPlaceChange.value = place;
+        container.appendChild(inputPlaceChange);
+
+        const acceptButton = document.createElement("button");
+        acceptButton.onclick = () => acceptFun(place, spent, index, _id, date);
+        container.appendChild(acceptButton);
+
+        const cancelButton = document.createElement("button");
+        cancelButton.onclick = () => cancelFun(index);
+        container.appendChild(cancelButton);
+
+        const imageAccept = document.createElement("img");
+        imageAccept.src = "img/accept.svg";
+        acceptButton.appendChild(imageAccept);
+
+        const imageCancel = document.createElement("img");
+        imageCancel.src = "img/cancel.svg";
+        cancelButton.appendChild(imageCancel);
+
+        const date = document.createElement("p");
+        date.addEventListener(
+          "dblclick",
+          (doubleTapPlace = (event) => {
+            listCosts[index].flag = 3;
+            render();
+          })
+        );
+        date.innerText = listCosts[index].date;
+
+        const spentText = document.createElement("p");
+        spentText.addEventListener(
+          "dblclick",
+          (doubleTapPlace = (event) => {
+            listCosts[index].flag = 4;
+            render();
+          })
+        );
+      } else {
+        if (listCosts[index].flag === 4) {
+          inputSpentChange = document.createElement("input");
+          inputSpentChange.type = "number";
+          inputSpentChange.addEventListener("change", inputChangeSpentValue);
+          inputSpentChange.value = spent;
+          container.appendChild(inputSpentChange);
+
+          const acceptButton = document.createElement("button");
+          acceptButton.onclick = () =>
+            acceptFun(place, spent, index, _id, date);
+          container.appendChild(acceptButton);
+
+          const cancelButton = document.createElement("button");
+          cancelButton.onclick = () => cancelFun(index);
+          container.appendChild(cancelButton);
+
+          const imageAccept = document.createElement("img");
+          imageAccept.src = "img/accept.svg";
+          acceptButton.appendChild(imageAccept);
+
+          const imageCancel = document.createElement("img");
+          imageCancel.src = "img/cancel.svg";
+          cancelButton.appendChild(imageCancel);
+
+          const text = document.createElement("p");
+          text.addEventListener(
+            "dblclick",
+            (doubleTapPlace = (event) => {
+              listCosts[index].flag = 2;
+              render();
+            })
+          );
+          date.innerText = listCosts[index].date;
+
+          const spentText = document.createElement("p");
+          spentText.addEventListener(
+            "dblclick",
+            (doubleTapPlace = (event) => {
+              listCosts[index].flag = 4;
+              render();
+            })
+          );
+        }
+      }
+      if (listCosts[index].flag === 3) {
+        dateChange = document.createElement("input");
+        dateChange.type = "date";
+        dateChange.addEventListener("change", dateChangetValue);
+        dateChange.value = date;
+        container.appendChild(dateChange);
+
+        const acceptButton = document.createElement("button");
+        acceptButton.onclick = () => acceptFun(place, spent, index, _id, date);
+        container.appendChild(acceptButton);
+
+        const cancelButton = document.createElement("button");
+        cancelButton.onclick = () => cancelFun(index);
+        container.appendChild(cancelButton);
+
+        const imageAccept = document.createElement("img");
+        imageAccept.src = "img/accept.svg";
+        acceptButton.appendChild(imageAccept);
+
+        const imageCancel = document.createElement("img");
+        imageCancel.src = "img/cancel.svg";
+        cancelButton.appendChild(imageCancel);
+      }
     } else {
       const secondContent = document.createElement("div");
       secondContent.className = "secondContent";
@@ -105,13 +221,33 @@ const render = () => {
       infoContent.className = "infoContent";
 
       const text = document.createElement("p");
+      text.addEventListener(
+        "dblclick",
+        (doubleTapPlace = (event) => {
+          listCosts[index].flag = 2;
+          render();
+        })
+      );
       text.innerText = `${index + 1}) Магазин: "${item.place}"`;
 
       const date = document.createElement("p");
-     
+      date.addEventListener(
+        "dblclick",
+        (doubleTapPlace = (event) => {
+          listCosts[index].flag = 3;
+          render();
+        })
+      );
       date.innerText = listCosts[index].date;
 
       const spentText = document.createElement("p");
+      spentText.addEventListener(
+        "dblclick",
+        (doubleTapPlace = (event) => {
+          listCosts[index].flag = 4;
+          render();
+        })
+      );
       spentText.innerText = `${spent} Р`;
 
       sum = sum + spent;
@@ -163,6 +299,10 @@ let inputChangeSpentValue = (event) => {
   inputSpentChange.value = event.target.value;
 };
 
+let dateChangetValue = (event) => {
+  dateChange.value = event.target.value;
+};
+
 const deleteFun = async (_id) => {
   const resp = await fetch(`http://localhost:8000/deleteCosts?_id=${_id}`, {
     method: "DELETE",
@@ -173,7 +313,7 @@ const deleteFun = async (_id) => {
   render();
 };
 
-const changeFun = (index) => {
+const changeFun = (index, event) => {
   listCosts[index].flag = 1;
 
   render();
@@ -185,11 +325,16 @@ const cancelFun = (index) => {
   render();
 };
 
-const acceptFun = async (place, spent, index, _id) => {
+const acceptFun = async (place, spent, index, _id, date) => {
   place = inputPlaceChange.value;
   spent = inputSpentChange.value;
+  date = new Date(dateChange.value).toLocaleDateString();
+  if (date == "Invalid Date") {
+    date = new Date().toLocaleDateString();
+  }
+
   if (isNaN(spent) || spent == 0 || place == "") {
-    alert("Заполните все поля или проверте корректность данных");
+    alert("Заполните все поля или проверьте корректность данных");
   } else {
     const resp = await fetch("http://localhost:8000/changeCost", {
       method: "PATCH",
@@ -200,6 +345,7 @@ const acceptFun = async (place, spent, index, _id) => {
       body: JSON.stringify({
         place,
         spent,
+        date,
         _id,
       }),
     });
