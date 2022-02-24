@@ -41,8 +41,8 @@ const addCosts = async () => {
     });
 
     const result = await resp.json();
-    
     listCosts = result.data;
+    
     inputPlace.value = "";
     inputSpent.value = 0;
     place = "";
@@ -295,10 +295,10 @@ const render = () => {
   });
 };
 const prettyDate = (a) => {
-    a = a.slice(0, 10)
-    let b = a.split("-")
-    b = b.reverse().join("-")
-    return b
+    a = a.slice(0, 10);
+    let b = a.split("-");
+    b = b.reverse().join("-");
+    return b;
 };
 
 let inputPlaceValue = (event) => {
