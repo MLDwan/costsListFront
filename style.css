@@ -21,13 +21,12 @@ div#mainContainer {
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
-  width: 55%;
 }
 
 div#mainContainer p {
   margin-bottom: 5;
   margin-top: 0;
-  font-size: 22px;
+  font-size: 25px;
 }
 
 div#content {
@@ -35,7 +34,7 @@ div#content {
   flex-direction: column;
   justify-content: space-around;
   align-items: stretch;
-  width: 55%;
+
   margin: 10px;
 }
 
@@ -45,6 +44,11 @@ div#content {
   justify-content: space-between;
   margin-top: 10px;
   align-items: center;
+}
+.costs-container input{
+  margin-left: 10px;
+  margin-right: 10px;
+  height: 40px;
 }
 
 .costs-container button img {
@@ -57,6 +61,7 @@ div#content {
   width: 30px;
   height: 30px;
   padding: 0;
+  margin-left: 20px;
   border: none;
   background: none;
 }
@@ -72,6 +77,7 @@ div#content {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-left: 50px;
 }
 
 .infoContent p {
@@ -91,6 +97,9 @@ input#inputSpent {
   height: 50px;
   border-radius: 5px;
   border: 1px solid #abafb1;
+}
+.inputContainer {
+  margin-right: 15px;
 }
 
 button#addInList {
@@ -127,23 +136,15 @@ div#content p {
   margin: 0;
 }
 
-@media (max-width:1250px) {
-  div#mainContainer p {
-    font-size: 25px;
-  }
-}
-
 @media (max-width: 1100px) {
   div#mainContainer {
     flex-direction: column;
     align-items: flex-end;
-    width: 40%;
+    width: 60%;
   }
+  
   div#content p {
     font-size: 25px;
-  }
-  div#content {
-    width: 40%;
   }
 
   div#mainContainer p {
@@ -151,17 +152,18 @@ div#content p {
   }
 
   .secondContent {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .infoContent {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .inputContainer {
     display: flex;
     flex-direction: column;
     margin-bottom: 10px;
+    margin-right: 0;
     width: 100%;
   }
 
@@ -171,7 +173,6 @@ div#content p {
 
   .costs-container {
     margin-bottom: 10px;
-    width: 100%;
   }
 
   .costs-container p {
@@ -181,14 +182,14 @@ div#content p {
 
   .buttonArea button {
     width: 20px;
-  }
-
-  .buttonArea {
-    width: 100%;
+    margin-right: 10px;
+    margin-left: 10px;
   }
 }
 
-@media (max-width: 860px) {
+
+
+@media (max-width: 960px) {
   .costs-container {
     flex-direction: column;
   }
@@ -199,25 +200,32 @@ div#content p {
     align-items: center;
   }
 
-  .buttonArea button {
+  .buttonArea button{
+    height: 100%;
+    width: 100%;
+    margin-top: 10px;
+    margin-left: 0;
+  }
+  .secondContent{
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .costs-container input {
+    margin-top: 15px;
+}
+
+  .infoContent {
     margin: 0;
-  }
-
-  .buttonArea {
-    justify-content: space-between;
-  }
-
-  div#content {
-    width: 60%;
-  }
-
-  div#mainContainer {
-    width: 60%;
   }
 }
 
 @media (max-width: 550px) {
   div#mainContainer p {
+    font-size: 20px;
+  }
+  button#addInList {
+    height: 30px;
     font-size: 20px;
   }
 
@@ -245,5 +253,9 @@ div#content p {
 
   header h1 {
     font-size: 18px;
+  }
+  .buttonArea {
+    display: flex;
+    height: 20px;
   }
 }

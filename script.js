@@ -7,7 +7,7 @@ window.onload = async () => {
   const addInList = document.getElementById("addInList");
   addInList.onclick = () => addCosts();
   const inputPlace = document.getElementById("inputPlace");
-  inputPlace.addEventListener("change", inputPlaceValue);
+  inputPlace.addEventListener("change", inputPlaceValue); 
   const inputSpent = document.getElementById("inputSpent");
   inputSpent.addEventListener("change", inputSpentValue);
 
@@ -24,7 +24,7 @@ const addCosts = async () => {
   let placeName = inputPlace.value;
   let spent = inputSpent.value;
 
-  if (isNaN(spent) || spent == "" || placeName == "") {
+  if (isNaN(spent) || spent.trim() == "" || placeName.trim() == "") {
     alert("Заполните все поля или проверте корректность данных");
   } else {
     const resp = await fetch("http://localhost:8000/createCosts", {
@@ -35,13 +35,14 @@ const addCosts = async () => {
       },
       body: JSON.stringify({
         place: placeName,
-        date: new Date().toLocaleDateString(),
+        date: new Date(),
         spent,
       }),
     });
-    const result = await resp.json();
-    listCosts = result.data;
 
+    const result = await resp.json();
+    
+    listCosts = result.data;
     inputPlace.value = "";
     inputSpent.value = 0;
     place = "";
@@ -58,16 +59,19 @@ const render = () => {
   while (content.firstChild) {
     content.removeChild(content.lastChild);
   }
-
   let summ = document.createElement("p");
+  summ.innerText = `Итого: ${sum} Р.`;
   content.appendChild(summ);
 
   listCosts.map((item, index) => {
     flag = 0;
-    let { place, spent, _id, date } = listCosts[index];
+    let {place, spent, _id, date } = listCosts[index];
+    let dateIndex = prettyDate(date);
+    
     const container = document.createElement("div");
     container.id = `costs-${index}`;
     container.className = "costs-container";
+    
     if (listCosts[index].flag > 0) {
       if (listCosts[index].flag === 1) {
         inputPlaceChange = document.createElement("input");
@@ -85,11 +89,13 @@ const render = () => {
         dateChange = document.createElement("input");
         dateChange.type = "date";
         dateChange.addEventListener("change", dateChangetValue);
-        dateChange.value = date;
+        dateChange.min = "2022-01-01";
+        dateChange.max = "2022-12-31";
+        dateChange.value = date.slice(0, 10);
         container.appendChild(dateChange);
 
         const acceptButton = document.createElement("button");
-        acceptButton.onclick = () => acceptFun(place, spent, index, _id, date);
+        acceptButton.onclick = () => acceptFun(place, spent, index, _id, dateIndex);
         container.appendChild(acceptButton);
 
         const cancelButton = document.createElement("button");
@@ -112,7 +118,7 @@ const render = () => {
         container.appendChild(inputPlaceChange);
 
         const acceptButton = document.createElement("button");
-        acceptButton.onclick = () => acceptFun(place, spent, index, _id, date);
+        acceptButton.onclick = () => acceptFun(place, spent, index, _id);
         container.appendChild(acceptButton);
 
         const cancelButton = document.createElement("button");
@@ -135,7 +141,7 @@ const render = () => {
             render();
           })
         );
-        date.innerText = listCosts[index].date;
+        date.innerText = date;
 
         const spentText = document.createElement("p");
         spentText.addEventListener(
@@ -178,7 +184,7 @@ const render = () => {
               render();
             })
           );
-          date.innerText = listCosts[index].date;
+          date.innerText = date;
 
           const spentText = document.createElement("p");
           spentText.addEventListener(
@@ -194,11 +200,14 @@ const render = () => {
         dateChange = document.createElement("input");
         dateChange.type = "date";
         dateChange.addEventListener("change", dateChangetValue);
-        dateChange.value = date;
+        dateChange.min = "2022-01-01";
+        dateChange.max = "2022-12-01";
+        dateChange.value = date.slice(0, 10);
+
         container.appendChild(dateChange);
 
         const acceptButton = document.createElement("button");
-        acceptButton.onclick = () => acceptFun(place, spent, index, _id, date);
+        acceptButton.onclick = () => acceptFun(place, spent, index, _id, dateIndex);
         container.appendChild(acceptButton);
 
         const cancelButton = document.createElement("button");
@@ -238,8 +247,7 @@ const render = () => {
           render();
         })
       );
-      date.innerText = listCosts[index].date;
-
+      date.innerText = dateIndex;
       const spentText = document.createElement("p");
       spentText.addEventListener(
         "dblclick",
@@ -249,7 +257,6 @@ const render = () => {
         })
       );
       spentText.innerText = `${spent} Р`;
-
       sum = sum + spent;
       summ.innerText = `Итого: ${sum} Р.`;
 
@@ -270,6 +277,7 @@ const render = () => {
       imageDelete.src = "img/remove.svg";
       deleteButton.appendChild(imageDelete);
 
+
       buttonArea.appendChild(changeButton);
       buttonArea.appendChild(deleteButton);
       container.appendChild(text);
@@ -278,9 +286,19 @@ const render = () => {
       infoContent.appendChild(spentText);
       secondContent.appendChild(infoContent);
       secondContent.appendChild(buttonArea);
+      
+
     }
+    
     content.appendChild(container);
+    
   });
+};
+const prettyDate = (a) => {
+    a = a.slice(0, 10)
+    let b = a.split("-")
+    b = b.reverse().join("-")
+    return b
 };
 
 let inputPlaceValue = (event) => {
@@ -326,11 +344,29 @@ const cancelFun = (index) => {
 };
 
 const acceptFun = async (place, spent, index, _id, date) => {
-  place = inputPlaceChange.value;
-  spent = inputSpentChange.value;
-  date = new Date(dateChange.value).toLocaleDateString();
+  if (listCosts[index].flag === 1) {
+    place = inputPlaceChange.value;
+    date = new Date(dateChange.value);
+    spent = inputSpentChange.value;
+  }
+
+  if (listCosts[index].flag === 2) {
+    place = inputPlaceChange.value;
+  }
+
+  if (listCosts[index].flag === 3) {
+    date = new Date(dateChange.value);
+    if (date == "Invalid Date") {
+      date = new Date();
+    }
+  }
+
+  if (listCosts[index].flag === 4) {
+    spent = inputSpentChange.value;
+  }
+
   if (date == "Invalid Date") {
-    date = new Date().toLocaleDateString();
+    date = new Date();
   }
 
   if (isNaN(spent) || spent == 0 || place == "") {
