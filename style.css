@@ -200,8 +200,6 @@ div#content p {
   }
 }
 
-
-
 @media (max-width: 960px) {
   .costs-container {
     flex-direction: column;
@@ -227,11 +225,12 @@ div#content p {
   
   .costs-container input {
     margin-top: 15px;
-}
+  }
 
   .infoContent {
     margin: 0;
   }
+
   div#content {
     width: 60%;
   }
@@ -272,6 +271,7 @@ div#content p {
   header h1 {
     font-size: 18px;
   }
+  
   .buttonArea {
     display: flex;
     height: 20px;
