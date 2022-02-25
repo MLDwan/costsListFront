@@ -34,7 +34,6 @@ div#content {
   flex-direction: column;
   justify-content: space-around;
   align-items: stretch;
-
   margin: 10px;
 }
 
@@ -45,10 +44,17 @@ div#content {
   margin-top: 10px;
   align-items: center;
 }
-.costs-container input{
+
+.costs-container input {
   margin-left: 10px;
   margin-right: 10px;
   height: 40px;
+  width: 55%;
+  font-size: 20px;
+}
+
+.costs-container input p{
+  font-size: 25px;
 }
 
 .costs-container button img {
@@ -58,7 +64,7 @@ div#content {
 }
 
 .costs-container button {
-  width: 30px;
+  width: 60px;
   height: 30px;
   padding: 0;
   margin-left: 20px;
@@ -86,10 +92,11 @@ div#content {
 }
 
 input#inputPlace {
-  width: 100%;
+  width: 370px;
   height: 50px;
   border-radius: 5px;
   border: 1px solid #abafb1;
+  font-size: 20px;
 }
 
 input#inputSpent {
@@ -97,7 +104,9 @@ input#inputSpent {
   height: 50px;
   border-radius: 5px;
   border: 1px solid #abafb1;
+  font-size: 20px;
 }
+
 .inputContainer {
   margin-right: 15px;
 }
@@ -141,6 +150,10 @@ div#content p {
     flex-direction: column;
     align-items: flex-end;
     width: 60%;
+  }
+
+  input#inputPlace {
+    width: 100%;
   }
   
   div#content p {
@@ -200,13 +213,14 @@ div#content p {
     align-items: center;
   }
 
-  .buttonArea button{
+  .buttonArea button {
     height: 100%;
     width: 100%;
     margin-top: 10px;
     margin-left: 0;
   }
-  .secondContent{
+
+  .secondContent {
     flex-direction: column;
     align-items: center;
   }
@@ -218,12 +232,16 @@ div#content p {
   .infoContent {
     margin: 0;
   }
+  div#content {
+    width: 60%;
+  }
 }
 
 @media (max-width: 550px) {
   div#mainContainer p {
     font-size: 20px;
   }
+
   button#addInList {
     height: 30px;
     font-size: 20px;

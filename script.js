@@ -64,16 +64,16 @@ const render = () => {
   content.appendChild(summ);
 
   listCosts.map((item, index) => {
-    flag = 0;
-    let {place, spent, _id, date } = listCosts[index];
+    let {place, spent, _id, date, flag} = listCosts[index];
+  
     let dateIndex = prettyDate(date);
     
     const container = document.createElement("div");
     container.id = `costs-${index}`;
     container.className = "costs-container";
     
-    if (listCosts[index].flag > 0) {
-      if (listCosts[index].flag === 1) {
+    if (flag > 0) {
+      if (flag === 1) {
         inputPlaceChange = document.createElement("input");
         inputPlaceChange.type = "text";
         inputPlaceChange.addEventListener("change", inputChangePlaceValue);
@@ -109,8 +109,9 @@ const render = () => {
         const imageCancel = document.createElement("img");
         imageCancel.src = "img/cancel.svg";
         cancelButton.appendChild(imageCancel);
-      }
-      if (listCosts[index].flag === 2) {
+      };
+
+      if (flag === 2) {
         inputPlaceChange = document.createElement("input");
         inputPlaceChange.type = "text";
         inputPlaceChange.addEventListener("change", inputChangePlaceValue);
@@ -136,8 +137,8 @@ const render = () => {
         const date = document.createElement("p");
         date.addEventListener(
           "dblclick",
-          (doubleTapPlace = (event) => {
-            listCosts[index].flag = 3;
+          (doubleTapDate = (event) => {
+            flag = 3;
             render();
           })
         );
@@ -147,12 +148,12 @@ const render = () => {
         spentText.addEventListener(
           "dblclick",
           (doubleTapPlace = (event) => {
-            listCosts[index].flag = 4;
+            flag = 4;
             render();
           })
         );
       } else {
-        if (listCosts[index].flag === 4) {
+        if (flag === 4) {
           inputSpentChange = document.createElement("input");
           inputSpentChange.type = "number";
           inputSpentChange.addEventListener("change", inputChangeSpentValue);
@@ -180,7 +181,7 @@ const render = () => {
           text.addEventListener(
             "dblclick",
             (doubleTapPlace = (event) => {
-              listCosts[index].flag = 2;
+              flag= 2;
               render();
             })
           );
@@ -189,14 +190,15 @@ const render = () => {
           const spentText = document.createElement("p");
           spentText.addEventListener(
             "dblclick",
-            (doubleTapPlace = (event) => {
-              listCosts[index].flag = 4;
+            (doubleTapSpent = (event) => {
+              flag= 4;
               render();
             })
           );
-        }
-      }
-      if (listCosts[index].flag === 3) {
+        };
+      };
+
+      if (flag === 3) {
         dateChange = document.createElement("input");
         dateChange.type = "date";
         dateChange.addEventListener("change", dateChangetValue);
@@ -221,7 +223,7 @@ const render = () => {
         const imageCancel = document.createElement("img");
         imageCancel.src = "img/cancel.svg";
         cancelButton.appendChild(imageCancel);
-      }
+      };
     } else {
       const secondContent = document.createElement("div");
       secondContent.className = "secondContent";
@@ -233,6 +235,7 @@ const render = () => {
       text.addEventListener(
         "dblclick",
         (doubleTapPlace = (event) => {
+          console.log(flag, listCosts[index].flag );
           listCosts[index].flag = 2;
           render();
         })
@@ -242,21 +245,23 @@ const render = () => {
       const date = document.createElement("p");
       date.addEventListener(
         "dblclick",
-        (doubleTapPlace = (event) => {
+        (doubleTapDate = (event) => {
           listCosts[index].flag = 3;
           render();
         })
       );
       date.innerText = dateIndex;
+
       const spentText = document.createElement("p");
       spentText.addEventListener(
         "dblclick",
-        (doubleTapPlace = (event) => {
+        (doubleTapSpent = (event) => {
           listCosts[index].flag = 4;
           render();
         })
       );
       spentText.innerText = `${spent} Р`;
+
       sum = sum + spent;
       summ.innerText = `Итого: ${sum} Р.`;
 
@@ -286,14 +291,11 @@ const render = () => {
       infoContent.appendChild(spentText);
       secondContent.appendChild(infoContent);
       secondContent.appendChild(buttonArea);
-      
-
-    }
-    
+    };    
     content.appendChild(container);
-    
   });
 };
+
 const prettyDate = (a) => {
     a = a.slice(0, 10);
     let b = a.split("-");
@@ -331,7 +333,7 @@ const deleteFun = async (_id) => {
   render();
 };
 
-const changeFun = (index, event) => {
+const changeFun = (index, flag) => {
   listCosts[index].flag = 1;
 
   render();
@@ -348,26 +350,26 @@ const acceptFun = async (place, spent, index, _id, date) => {
     place = inputPlaceChange.value;
     date = new Date(dateChange.value);
     spent = inputSpentChange.value;
-  }
+  };
 
   if (listCosts[index].flag === 2) {
     place = inputPlaceChange.value;
-  }
+  };
 
   if (listCosts[index].flag === 3) {
     date = new Date(dateChange.value);
     if (date == "Invalid Date") {
       date = new Date();
-    }
-  }
+    };
+  };
 
   if (listCosts[index].flag === 4) {
     spent = inputSpentChange.value;
-  }
+  };
 
   if (date == "Invalid Date") {
     date = new Date();
-  }
+  };
 
   if (isNaN(spent) || spent == 0 || place == "") {
     alert("Заполните все поля или проверьте корректность данных");
@@ -394,5 +396,5 @@ const acceptFun = async (place, spent, index, _id, date) => {
     inputPlace.value = "";
 
     render();
-  }
+  };
 };
